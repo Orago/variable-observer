@@ -5,9 +5,9 @@
  */
 export default class VariableObserver {
 	/**
-	 * @type {Array<Function>}
+	 * @type {Set<Function>}
 	 */
-	listeners = [];
+	listeners = new Set();
 
 	/**
 	 * @type {valueType | any}
@@ -66,7 +66,7 @@ export default class VariableObserver {
 		if (this.rawValue != null)
 			callback(this.rawValue);
 
-		this.listeners.push(callback);
+		this.listeners.add(callback);
 	}
 
 
@@ -75,7 +75,7 @@ export default class VariableObserver {
 	 * @param {function (valueType): *} callback 
 	 */
 	unsubscribe(callback) {
-		this.listeners = this.listeners.filter(listener => listener !== callback);
+		this.listeners.delete(callback);
 	}
 
 	/**
