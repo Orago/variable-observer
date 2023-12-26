@@ -1,4 +1,4 @@
-# @orago/status
+# @orago/variable-observer
 
 ### Usage:
 

@@ -1,47 +1,47 @@
-class VariableObserver {
-  listeners = [];
-  #value;
 
-  constructor (defaultValue) {
-    this.#value = defaultValue;
-  }
 
-  // Checking
-  validate (newValue){
-    return this.#value !== newValue;
-  }
+export default class VariableObserver {
+	listeners = [];
+	rawValue;
 
-  sanitize (newValue){
-    return newValue;
-  }
+	constructor(defaultValue) {
+		this.rawValue = defaultValue;
+	}
 
-  // Mutators
-  get value (){
-    return this.#value;
-  }
+	// Checking
+	validate(newValue) {
+		return this.rawValue !== newValue;
+	}
 
-  set value (input){
-    if (this.validate(input)) {
-			this.#value = this.sanitize(input);
-      this.notify();
-    }
-  }
+	sanitize(newValue) {
+		return newValue;
+	}
 
-  // Listeners
-  subscribe(callback) {
-    if (this.#value != null)
-      callback(this.#value);
+	// Mutators
+	get value() {
+		return this.rawValue;
+	}
 
-    this.listeners.push(callback);
-  }
+	set value(input) {
+		if (this.validate(input)) {
+			this.rawValue = this.sanitize(input);
+			this.notify();
+		}
+	}
 
-  unsubscribe(callback) {
-    this.listeners = this.listeners.filter(listener => listener !== callback);
-  }
+	// Listeners
+	subscribe(callback) {
+		if (this.rawValue != null)
+			callback(this.rawValue);
 
-  notify () {
-    this.listeners.forEach(listener => listener(this.#value));
-  }
+		this.listeners.push(callback);
+	}
+
+	unsubscribe(callback) {
+		this.listeners = this.listeners.filter(listener => listener !== callback);
+	}
+
+	notify() {
+		this.listeners.forEach(listener => listener(this.rawValue));
+	}
 }
-
-export default VariableObserver;
